@@ -1,6 +1,6 @@
 # React Step Wizard
 
-A flexible multistep wizard built for React which is great and awesome!
+A flexible multistep wizard built for React which is great and awesome for apps!
 
 [![npm version](https://badge.fury.io/js/react-step-wizard.svg)](https://badge.fury.io/js/react-step-wizard)
 
