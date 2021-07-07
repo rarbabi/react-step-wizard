@@ -60,10 +60,12 @@ const Wizard = () => {
                             instance={setInstance}
                         >
                             <First hashKey={'FirstStep'} update={updateForm} />
-                            <Second form={state.form} />
+                            <Second update={updateForm} form={state.form} />
+                            <Third update={updateForm} form={state.form} />
+                            <Fourth update={updateForm} form={state.form} />
                             <Progress />
                             {null /* will be ignored */}
-                            <Last hashKey={'TheEnd!'} />
+                            <Last form={state.form} hashKey={'TheEnd!'} />
                         </StepWizard>
                     </div>
                 </div>
@@ -130,10 +132,10 @@ const First = props => {
 
     return (
         <div>
-            <h3 className='text-center'>Welcome! Have a look around!</h3>
+            <h3 className='text-center'>Welcome! Let's Get Started!</h3>
 
-            <label>First Name</label>
-            <input type='text' className='form-control' name='firstname' placeholder='First Name'
+            <label>Product Name</label>
+            <input type='text' className='form-control' name='prodname' placeholder='Product Name'
                 onChange={update} />
             <Stats step={1} {...props} />
         </div>
@@ -141,6 +143,10 @@ const First = props => {
 };
 
 const Second = props => {
+    const update = (e) => {
+        props.update(e.target.name, e.target.value);
+    };
+
     const validate = () => {
         if (confirm('Are you sure you want to go back?')) { // eslint-disable-line
             props.previousStep();
@@ -149,9 +155,56 @@ const Second = props => {
 
     return (
         <div>
-            { props.form.firstname && <h3>Hey {props.form.firstname}! 👋</h3> }
-            I've added validation to the previous button.
-            <Stats step={2} {...props} previousStep={validate} />
+            <h3 className='text-center'>What is your product category?</h3>
+
+            <label>Product Category</label>
+            <input type='text' className='form-control' name='prodcat' placeholder='Product Category'
+                onChange={update} previousStep={validate} />
+            <Stats step={2} {...props} />
+        </div>
+    );
+};
+
+const Third = props => {
+
+    const update = (e) => {
+        props.update(e.target.name, e.target.value);
+    };
+
+    const validate = () => {
+        if (confirm('Are you sure you want to go back?')) { // eslint-disable-line
+            props.previousStep();
+        }
+    };
+    return (
+        <div>
+            <h3 className='text-center'>How much is your total cost per item?</h3>
+
+            <label>Product Cost Per Item</label>
+            <input type='text' className='form-control' name='prodcost' placeholder='$'
+                onChange={update} previousStep={validate} />
+            <Stats step={3} {...props} />
+        </div>
+    );
+};
+
+const Fourth = props => {
+    const update = (e) => {
+        props.update(e.target.name, e.target.value);
+    };
+    const validate = () => {
+        if (confirm('Are you sure you want to go back?')) { // eslint-disable-line
+            props.previousStep();
+        }
+    };
+    return (
+        <div>
+            <h3 className='text-center'>How much is your expected RIO per item?</h3>
+
+            <label>ROI Per Item</label>
+            <input type='text' className='form-control' name='prodroi' placeholder='$'
+                onChange={update} previousStep={validate} />
+            <Stats step={4} {...props} />
         </div>
     );
 };
@@ -183,7 +236,7 @@ const Progress = (props) => {
 
     return (
         <div className={styles['progress-wrapper']}>
-            <p className='text-center'>Automated Progress...</p>
+            <p className='text-center'>Crunching numbers...</p>
             <div className={`${styles.progress} ${state.isActiveClass}`}>
                 <div className={`${styles['progress-bar']} progress-bar-striped`} />
             </div>
@@ -199,11 +252,35 @@ const Last = (props) => {
     return (
         <div>
             <div className={'text-center'}>
-                <h3>This is the last step in this example!</h3>
-                <hr />
-                <Plugs />
+                <h3>Summary:</h3>
+                <table>
+                  <thead>
+                       <tr>
+                    <th>Field</th>
+                    <th>Value</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>Product Name</td>
+                        <td>{props.form.prodname}</td>
+                    </tr>
+                    <tr>
+                        <td>Product Category</td>
+                        <td>{props.form.prodcat}</td>
+                    </tr>
+                    <tr>
+                        <td>Product Cost Per Item</td>
+                        <td>{props.form.prodcost}</td>
+                    </tr>
+                    <tr>
+                        <td>Expected RIO per Item</td>
+                        <td>{props.form.prodroi}</td>
+                    </tr>
+                    </tbody>
+                   </table>
             </div>
-            <Stats step={4} {...props} nextStep={submit} />
+            <Stats step={6} {...props} nextStep={submit} />
         </div>
     );
 };
